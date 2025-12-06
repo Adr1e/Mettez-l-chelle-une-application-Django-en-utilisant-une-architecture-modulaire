@@ -1,1 +1,1 @@
-from django.contrib import admin
+# Admin configuration moved to lettings/admin.py and profiles/admin.py
