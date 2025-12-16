@@ -75,3 +75,15 @@ Utilisation de PowerShell, comme ci-dessus sauf :
 
 - Pour activer l'environnement virtuel, `.\venv\Scripts\Activate.ps1` 
 - Remplacer `which <my-command>` par `(Get-Command <my-command>).Path`
+
+# Activer l'environnement virtuel
+source venv/bin/activate
+
+# Lancer le serveur
+python manage.py runserver
+
+# Exécuter flake8 (doit retourner 0 erreur)
+flake8
+
+# Exécuter les tests avec couverture
+pytest --cov=. --cov-report=term-missing
