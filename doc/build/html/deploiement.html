@@ -1,0 +1,226 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Procédures de déploiement &mdash; Documentation Orange County Lettings 1.0.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=05dadb3a"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=e6b791cb"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="prev" title="Guide d’utilisation" href="guide_utilisation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Orange County Lettings
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Sommaire</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="description.html">Description du projet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation du projet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demarrage_rapide.html">Guide de démarrage rapide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="technologies.html">Technologies utilisées</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Interfaces de programmation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guide_utilisation.html">Guide d’utilisation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Procédures de déploiement</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#architecture-de-deploiement">Architecture de déploiement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-requise">Configuration requise</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#secrets-github">Secrets GitHub</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#variables-d-environnement-render">Variables d’environnement Render</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#etapes-de-deploiement">Étapes de déploiement</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#deploiement-automatique">Déploiement automatique</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lancer-avec-docker-localement">Lancer avec Docker localement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#monitoring-avec-sentry">Monitoring avec Sentry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#liens-utiles">Liens utiles</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Orange County Lettings</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Procédures de déploiement</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/deploiement.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="procedures-de-deploiement">
+<h1>Procédures de déploiement<a class="headerlink" href="#procedures-de-deploiement" title="Lien vers cette rubrique"></a></h1>
+<section id="architecture-de-deploiement">
+<h2>Architecture de déploiement<a class="headerlink" href="#architecture-de-deploiement" title="Lien vers cette rubrique"></a></h2>
+<p>Le déploiement utilise un pipeline CI/CD avec GitHub Actions :</p>
+<ol class="arabic simple">
+<li><p><strong>Build &amp; Test</strong> : À chaque push, le code est testé (flake8 + pytest)</p></li>
+<li><p><strong>Conteneurisation</strong> : Si les tests passent et que c’est la branche <code class="docutils literal notranslate"><span class="pre">master</span></code>, une image Docker est construite et poussée sur Docker Hub</p></li>
+<li><p><strong>Déploiement</strong> : L’image est automatiquement déployée sur Render</p></li>
+</ol>
+</section>
+<section id="configuration-requise">
+<h2>Configuration requise<a class="headerlink" href="#configuration-requise" title="Lien vers cette rubrique"></a></h2>
+<section id="secrets-github">
+<h3>Secrets GitHub<a class="headerlink" href="#secrets-github" title="Lien vers cette rubrique"></a></h3>
+<p>Configurer dans : Settings → Secrets → Actions</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Secret</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DOCKER_USERNAME</p></td>
+<td><p>Nom d’utilisateur Docker Hub</p></td>
+</tr>
+<tr class="row-odd"><td><p>DOCKER_PASSWORD</p></td>
+<td><p>Mot de passe Docker Hub</p></td>
+</tr>
+<tr class="row-even"><td><p>RENDER_DEPLOY_HOOK</p></td>
+<td><p>URL du Deploy Hook Render</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="variables-d-environnement-render">
+<h3>Variables d’environnement Render<a class="headerlink" href="#variables-d-environnement-render" title="Lien vers cette rubrique"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Valeur</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SECRET_KEY</p></td>
+<td><p>Clé secrète Django</p></td>
+</tr>
+<tr class="row-odd"><td><p>DEBUG</p></td>
+<td><p>False</p></td>
+</tr>
+<tr class="row-even"><td><p>SENTRY_DSN</p></td>
+<td><p>DSN Sentry</p></td>
+</tr>
+<tr class="row-odd"><td><p>ALLOWED_HOSTS</p></td>
+<td><p>.onrender.com</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="etapes-de-deploiement">
+<h2>Étapes de déploiement<a class="headerlink" href="#etapes-de-deploiement" title="Lien vers cette rubrique"></a></h2>
+<section id="deploiement-automatique">
+<h3>Déploiement automatique<a class="headerlink" href="#deploiement-automatique" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>add<span class="w"> </span>.
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Votre message&quot;</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>master
+</pre></div>
+</div>
+<p>Le pipeline CI/CD se déclenche automatiquement.</p>
+</section>
+<section id="lancer-avec-docker-localement">
+<h3>Lancer avec Docker localement<a class="headerlink" href="#lancer-avec-docker-localement" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>pull<span class="w"> </span>adr1e/oc-lettings:latest
+docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>-e<span class="w"> </span><span class="nv">SECRET_KEY</span><span class="o">=</span><span class="s1">&#39;your-key&#39;</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">DEBUG</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">SENTRY_DSN</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="w"> </span>adr1e/oc-lettings:latest
+</pre></div>
+</div>
+<p>Accéder au site : <a class="reference external" href="http://127.0.0.1:8000/">http://127.0.0.1:8000/</a></p>
+</section>
+</section>
+<section id="monitoring-avec-sentry">
+<h2>Monitoring avec Sentry<a class="headerlink" href="#monitoring-avec-sentry" title="Lien vers cette rubrique"></a></h2>
+<p>Les erreurs sont automatiquement capturées et envoyées à Sentry.</p>
+<p>Configuration :</p>
+<ol class="arabic simple">
+<li><p>Créer un compte sur <a class="reference external" href="https://sentry.io">https://sentry.io</a></p></li>
+<li><p>Créer un projet Django</p></li>
+<li><p>Récupérer le DSN</p></li>
+<li><p>Ajouter le DSN dans les variables d’environnement</p></li>
+</ol>
+</section>
+<section id="liens-utiles">
+<h2>Liens utiles<a class="headerlink" href="#liens-utiles" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>Site en production : <a class="reference external" href="https://oc-lettings-h475.onrender.com">https://oc-lettings-h475.onrender.com</a></p></li>
+<li><p>Docker Hub : <a class="reference external" href="https://hub.docker.com/r/adr1e/oc-lettings">https://hub.docker.com/r/adr1e/oc-lettings</a></p></li>
+<li><p>GitHub Actions : <a class="reference external" href="https://github.com/Adr1e/Mettez-l-chelle-une-application-Django-en-utilisant-une-architecture-modulaire/actions">https://github.com/Adr1e/Mettez-l-chelle-une-application-Django-en-utilisant-une-architecture-modulaire/actions</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="guide_utilisation.html" class="btn btn-neutral float-left" title="Guide d’utilisation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2024, Adrien Fischer.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
