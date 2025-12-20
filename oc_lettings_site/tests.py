@@ -12,7 +12,7 @@ class TestIndexView:
         """Test home page view."""
         response = client.get(reverse('index'))
         assert response.status_code == 200
-        assert b"Welcome to OC Lettings" in response.content
+        assert b"Welcome to OC Lettings Modified" in response.content
 
 
 @pytest.mark.django_db
